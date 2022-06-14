@@ -1,23 +1,13 @@
-;;=============================
-;; solution of question 2
-;;=============================
-
 (define (search-target target assoc-target-list)
   (cond
     [(empty? assoc-target-list) (error "empty list")]  ;; empty list, we return 0, but this will never happen
     [(equal? target (first (first assoc-target-list))) (second (first assoc-target-list))]
     [else (search-target target (rest assoc-target-list))]))
 
-(define (search-unit unit units)
-  (search-target unit units))
-
-(define (search-ingredient ingredient ingredients)
-  (search-target ingredient ingredients))
-
-(define (volume->grams amount unit ingredient units-dict ingredients-dict)
+(define (volume->grams amount unit ingredient units ingredients)
   (* amount 
-     (search-unit unit units) 
-     (search-ingredient ingredient ingredients-dict)))
+     (search-target unit units) 
+     (search-target ingredient ingredients)))
 
 ;; this is used for test
 (define (make-pair x y) (list x y))

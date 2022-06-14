@@ -1,7 +1,12 @@
-;;=============================
-;; solution of question 1
-;;=============================
+;; n > 0
+;; this function is used to calculate the number of factor 2 of `n`
+(define (times-to-divide-2 n)
+  (cond 
+    [(= n 0) +inf.0]  ;; if n is 0, we set it infinity
+    [(even? n) (+ 1 (times-to-divide-2 (/ n 2)))]  ;; if n is even, then we know it can be divided by 2.
+    [else 0]))  ;; if n is odd, we just return 0
 
+;; compare the numbers of factor 2 of `x` and `y`
 (define (comp x y)
   (cond
     [(= (times-to-divide-2 x) (times-to-divide-2 y)) (< x y)]
@@ -10,7 +15,7 @@
 (define (insert n lon)
   (cond 
     [(empty? lon) (list n)]
-    [(comp n (first lon)) (cons n lon)]
+    [(comp n (first lon)) (cons n lon)]  ;; pay attention, we use `comp` here instead of `<`
     [else (cons (first lon)
                 (insert n (rest lon)))]))
 
@@ -18,13 +23,6 @@
   (cond
     [(empty? lon) empty]
     [else (insert (first lon) (my-sort (rest lon)))]))
-
-;; n > 0
-(define (times-to-divide-2 n)
-  (cond 
-    [(= n 0) +inf.0]  ;; if n is 0, we set it infinity
-    [(even? n) (+ 1 (times-to-divide-2 (/ n 2)))]  ;; recursive call
-    [else 0]))  ;; if n is odd, we just return 0
 
 (define (2-adic-sort l)
   (my-sort l))  ;; just sort it
