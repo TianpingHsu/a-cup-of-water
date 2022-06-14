@@ -1,5 +1,3 @@
-#lang racket
-
 ;;=============================
 ;; solution of question 2
 ;;=============================
@@ -7,9 +5,8 @@
 (define (search-target target assoc-target-list)
   (cond
     [(empty? assoc-target-list) (error "empty list")]  ;; empty list, we return 0, but this will never happen
-    [(equal? target (caar assoc-target-list)) (cdar assoc-target-list)]
-    [else (search-target target (cdr assoc-target-list))]
-    ))
+    [(equal? target (first (first assoc-target-list))) (second (first assoc-target-list))]
+    [else (search-target target (rest assoc-target-list))]))
 
 (define (search-unit unit units)
   (search-target unit units))
@@ -23,7 +20,7 @@
      (search-ingredient ingredient ingredients-dict)))
 
 ;; this is used for test
-(define (make-pair x y) (cons x y))
+(define (make-pair x y) (list x y))
 (define units
   (list (make-pair "cups" 237)
         (make-pair "teaspoons" 5)

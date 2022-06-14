@@ -1,18 +1,17 @@
-#lang racket
-
 ;;=============================
 ;; solution of question 3
 ;;=============================
+
 (define elements-weight
-  (list (cons 'H 1)
-        (cons 'C 12)
-        (cons 'N 14)
-        (cons 'O 16)))
+  (list (list 'H 1)
+        (list 'C 12)
+        (list 'N 14)
+        (list 'O 16)))
 (define (search-target target assoc-target-list)
   (cond
     [(empty? assoc-target-list) (error "empty list")]  ;; empty list, we return 0, but this will never happen
-    [(equal? target (caar assoc-target-list)) (cdar assoc-target-list)]
-    [else (search-target target (cdr assoc-target-list))]
+    [(equal? target (first (first assoc-target-list))) (second (first assoc-target-list))]
+    [else (search-target target (rest assoc-target-list))]
     ))
 (define (get-element-weight element)
   (search-target element elements-weight))
@@ -20,22 +19,37 @@
 ;; peek next element of compound and check if it is a number
 (define (peek compound)
   (cond 
-    [(or (empty? compound) (symbol? (car compound))) 1]
-    [else (car compound)]))
+    [(or (empty? compound) (symbol? (first compound))) 1]
+    [else (first compound)]))
 
 ;; calculate the molar mass of the given compound
 (define (molar-mass compound)
   (cond
     [(empty? compound) 0]
-    [(not (symbol? (car compound))) (molar-mass (cdr compound))]
-    [else (+ (* (get-element-weight (car compound)) (peek (cdr compound)))
-             (molar-mass (cdr compound)))]))
+    [(not (symbol? (first compound))) (molar-mass (rest compound))]
+    [else (+ (* (get-element-weight (first compound)) (peek (rest compound)))
+             (molar-mass (rest compound)))]))
+
+(define (comp x y)
+  (cond 
+    [(> (molar-mass x) (molar-mass y)) #t]
+    [else #f]))
+
+(define (insert n lon)
+  (cond 
+    [(empty? lon) (list n)]
+    [(comp n (first lon)) (cons n lon)]
+    [else (cons (first lon)
+                (insert n (rest lon)))]))
+
+(define (my-sort lon)
+  (cond
+    [(empty? lon) empty]
+    [else (insert (first lon) (my-sort (rest lon)))]))
 
 ;; just sort the compound list decreasingly
 (define (heaviest compounds)
-  (car (sort compounds 
-             (lambda (x y) (> (molar-mass x)
-                              (molar-mass y))))))
+  (first (my-sort compounds)))
 
 ;; this is used for test
 (define methane (list 'C 'H 4))
