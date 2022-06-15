@@ -1,2 +1,8 @@
-# a-cup-of-water
-![wechat pay](./wechat_pay.jpg)
+# buy me a cup of water
+<details>
+    <summary>how to pay</summary>
+    <img src="./assets/wechat_pay.jpg" alt="wechat pay">
+</details>
+
+
+
