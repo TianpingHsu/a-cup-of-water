@@ -1,3 +1,10 @@
+;; A leaf-labelled tree (LLT) is one of:
+;; * empty
+;; * (cons Atom LLT)
+;; * (cons LLT LLT)
+;; Requires: the LLT contains no nested empty lists
+
+;; An Atom is an (anyof Num Str Sym)
 
 (define (parens llt)
   (cond
