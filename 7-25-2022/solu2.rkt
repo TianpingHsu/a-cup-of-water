@@ -12,17 +12,14 @@
 
 (define (rotate-right n bst)
   (cond
-    [(empty? bst) empty]  ;; and basic case
-    [(< n (node-key bst))
+    [(empty? bst) empty]  ;; basic case
+    [(< n (node-key bst))  ;; go left, note that we just copy the right subtree
      (make-node (node-key bst) (rotate-right n (node-left bst)) (copy-bst (node-right bst)))]
-    [(> n (node-key bst))
+    [(> n (node-key bst))  ;; go right, note that we just copy the left subtree
      (make-node (node-key bst) (copy-bst (node-left bst)) (rotate-right n (node-right bst)))]
     [else
       (cond
-        [(empty? (node-left bst))  ;; case 2
-         (make-node (node-key bst)
-                    (node-left bst)
-                    (node-right bst))]
+        [(empty? (node-left bst)) (copy-bst bst)]  ;; case 2
         [else  ;; case 3
           (local
             [(define m (node-left bst))
@@ -70,20 +67,23 @@
                    (list (node-key set)))]))
 
 
-  (define x empty)
-  (define y (set-insert 10 x))
-  (define z (set-insert 8 y))
-  (define a (set-insert 6 z))
-  (define b (set-insert 7 a))
-  (define c (set-insert 5 b))
-  (define d (set-insert 9 c))
-  (define ee (set-insert 11 d))
-  ;;(println (preorder y))
-  ;;(println (preorder z))
-  ;;(println (preorder a))
-  ;;(println (preorder b))
-  ;;(println (preorder c))
-  ;;(println (preorder d))
-  (preorder ee)  ;; before rotate
-  (preorder (rotate-right 8 ee))  ;; after rotate
+(define x empty)
+(define y (set-insert 10 x))
+(define z (set-insert 8 y))
+(define a (set-insert 6 z))
+(define b (set-insert 7 a))
+(define c (set-insert 5 b))
+(define d (set-insert 9 c))
+(define ee (set-insert 11 d))
+;;(println (preorder y))
+;;(println (preorder z))
+;;(println (preorder a))
+;;(println (preorder b))
+;;(println (preorder c))
+;;(println (preorder d))
+(preorder ee)  ;; before rotate
+(preorder (rotate-right 8 ee))  ;; after rotate
+(preorder (rotate-right 10 ee))
+(preorder (rotate-right 11 ee))  ;; no left child
+(preorder (rotate-right 23 ee))  ;; no such node
 
